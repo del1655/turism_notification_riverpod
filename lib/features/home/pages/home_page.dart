@@ -19,29 +19,32 @@ class HomePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Destinos ($badge)'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: () async {
-              await ref.read(notificationServiceProvider).showLocal(
-                title: 'Novedad turística',
-                body: 'Nueva promo en Quintana Roo 🌴',
-                payload: '/promo',
-              );
-              ref.read(badgeCountProvider.notifier).state++;
-            },
+        title: Text(
+          'Destinos ($badge)',
+          style: const TextStyle(
+            color: Color(0xFF5A2EA6),
+            fontWeight: FontWeight.bold,
           ),
-        ],
+        ),
+        backgroundColor: Colors.white.withOpacity(0.2),
+        elevation: 0,
+        flexibleSpace: ClipRect(
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+            child: Container(
+              color: Colors.transparent,
+            ),
+          ),
+        ),
       ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Color(0xFFFFF0F5), // rosa clarito
-              Color(0xFFFFF8E0), // amarillo pastel
-              Color(0xFFE6E0FF), // lila pastel
-              Color(0xFFFFE6CC), // naranja pastel
+              Color(0xFFFFF0F5),
+              Color(0xFFFFF8E0),
+              Color(0xFFE6E0FF),
+              Color(0xFFFFE6CC),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -54,70 +57,123 @@ class HomePage extends ConsumerWidget {
             final d = destinos[i];
 
             return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(30),
-                onTap: () async {
-                  await ref.read(notificationServiceProvider).showLocal(
-                    title: 'Explora ${d['nombre']}',
-                    body: 'Descubre ${d['nombre']} (${d['tipo']})',
-                    payload: '/destino/${d['nombre']}',
-                  );
-                  ref.read(badgeCountProvider.notifier).state++;
-                },
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.purple.withOpacity(0.1),
+                      blurRadius: 20,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                ),
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(25),
                   child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                    filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.35),
-                        borderRadius: BorderRadius.circular(30),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.25),
-                          width: 1.5,
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Colors.white.withOpacity(0.3),
+                            Colors.white.withOpacity(0.1),
+                          ],
                         ),
-                        boxShadow: [
-                          // Sombra principal
-                          BoxShadow(
-                            color: Colors.purpleAccent.withOpacity(0.25),
-                            blurRadius: 25,
-                            offset: const Offset(0, 10),
-                          ),
-                          // Sombra secundaria más clara para profundidad
-                          BoxShadow(
-                            color: Colors.purpleAccent.withOpacity(0.15),
-                            blurRadius: 15,
-                            offset: const Offset(0, 5),
-                          ),
-                        ],
+                        border: Border.all(
+                          color: Colors.white.withOpacity(0.3),
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(25),
                       ),
-                      padding: const EdgeInsets.all(20),
-                      child: Row(
-                        children: [
-                          const Icon(Icons.place, color: Color(0xFF7B4BFF), size: 36),
-                          const SizedBox(width: 20),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                d['nombre']!,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF5A2EA6),
+                      child: Material(
+                        color: Colors.transparent,
+                        child: InkWell(
+                          onTap: () async {
+                            await ref.read(notificationServiceProvider).showLocal(
+                              title: 'Explora ${d['nombre']}',
+                              body: 'Descubre ${d['nombre']} (${d['tipo']})',
+                              payload: '/destino/${d['nombre']}',
+                            );
+                            ref.read(badgeCountProvider.notifier).state++;
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Row(
+                              children: [
+                                // Icono con efecto glass mejorado
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.white.withOpacity(0.6),
+                                        Colors.white.withOpacity(0.2),
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    border: Border.all(
+                                      color: Colors.white.withOpacity(0.4),
+                                      width: 1.5,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.white.withOpacity(0.2),
+                                        blurRadius: 10,
+                                        offset: const Offset(-2, -2),
+                                      ),
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 10,
+                                        offset: const Offset(2, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: const Icon(
+                                    Icons.place,
+                                    color: Color(0xFF7B4BFF),
+                                    size: 24,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                d['tipo']!,
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  color: Color(0xFF7B4BFF),
+                                const SizedBox(width: 16),
+                                // Contenido de texto
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        d['nombre']!,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color(0xFF5A2EA6),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        d['tipo']!,
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: const Color(0xFF7B4BFF).withOpacity(0.8),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                                // Indicador sutil
+                                Icon(
+                                  Icons.chevron_right,
+                                  color: const Color(0xFF7B4BFF).withOpacity(0.6),
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),
